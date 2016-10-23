@@ -30,15 +30,16 @@ export default class Grid extends Component {
       clicks: 0,
       boxWidthAndHeight: width / this.props.x,
     };
-    this.renderGrid = this.renderGrid.bind(this);
+    this.generateGrid = this.generateGrid.bind(this);
+    this.renderButtons = this.renderButtons.bind(this);
     this.itemPressed = this.itemPressed.bind(this);
     this.checkColor = this.checkColor.bind(this);
     this.resetGame = this.resetGame.bind(this);
   }
   resetGame() {
-    this.renderGrid(this.state.gridX, this.state.gridY);
+    this.generateGrid(this.state.gridX, this.state.gridY);
   }
-  renderGrid(x, y) {
+  generateGrid(x, y) {
     var gridObj = [];
     for (let i = 0; i <= x; i++) {
       gridObj[i] = [];
@@ -53,7 +54,7 @@ export default class Grid extends Component {
     });
   }
   componentWillMount() {
-    this.renderGrid(this.state.gridX, this.state.gridY);
+    this.generateGrid(this.state.gridX, this.state.gridY);
   }
   checkColor(lastColor, newColor, x, y) {
     let newGrid = this.state.grid;
@@ -65,13 +66,13 @@ export default class Grid extends Component {
     if (x > 0) {
       this.checkColor(lastColor, newColor, x - 1, y);
     }
-    if (x < this.state.gridX - 1) {
+    if (x < this.state.gridX) {
       this.checkColor(lastColor, newColor, x + 1, y);
     }
     if (y > 0) {
       this.checkColor(lastColor, newColor, x, y - 1);
     }
-    if (y < this.state.gridY - 1) {
+    if (y < this.state.gridY) {
       this.checkColor(lastColor, newColor, x, y + 1);
     }
   }
@@ -81,35 +82,48 @@ export default class Grid extends Component {
     });
     this.checkColor(this.state.grid[0][0], color, 0, 0);
   }
-  reRenderGrid() {
+  renderGrid() {
     const render = this.state.grid.map((item, x) => {
       return (
         <View key={x} style={styles.row}>
         {this.state.grid[x].map((color, y) => {
-          return (<TouchableOpacity onPress={() => this.itemPressed(color)} key={y+x} style={{backgroundColor: color, width: this.state.boxWidthAndHeight, height: this.state.boxWidthAndHeight}}></TouchableOpacity>)
+          return (<View onPress={() => this.itemPressed(color)} key={y+x} style={{backgroundColor: color, width: this.state.boxWidthAndHeight, height: this.state.boxWidthAndHeight}}></View>)
         })}
         </View>
       );
     });
     return render;
   }
+  renderButtons() {
+    const render = COLORS.map((color, i) => {
+      return (
+        <TouchableOpacity key={i} style={{backgroundColor: color, width: 30, height: 30, margin: 10}} onPress={() => this.itemPressed(color)}></TouchableOpacity>
+      )
+    });
+    return render;
+  }
   render() {
     return (
       <View style={styles.container}>
-        {this.reRenderGrid()}
+        {this.renderGrid()}
         <TouchableOpacity onPress={this.resetGame}><Text>Reset ({this.state.clicks})</Text></TouchableOpacity>
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>{this.renderButtons()}</View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  button: {
+    width: 40,
+    height: 10,
+    margin: 20,
+  },
   row: {
     flexDirection: 'row',
   },
   container: {
     flex: 1,
-    backgroundColor: '#F5FCFF',
     marginTop: 50,
   },
 });

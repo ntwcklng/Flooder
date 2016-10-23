@@ -15,7 +15,7 @@ export default class GameView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Grid x={48} y={48}/>
+        <Grid x={16} y={16}/>
       </View>
     );
   }

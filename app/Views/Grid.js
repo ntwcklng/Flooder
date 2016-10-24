@@ -29,6 +29,7 @@ export default class Grid extends Component {
       grid: [],
       clicks: 0,
       boxWidthAndHeight: width / this.props.x,
+      buttonHeight: (width / COLORS.length) - 10,
     };
     this.generateGrid = this.generateGrid.bind(this);
     this.renderButtons = this.renderButtons.bind(this);
@@ -96,9 +97,7 @@ export default class Grid extends Component {
   }
   renderButtons() {
     const render = COLORS.map((color, i) => {
-      return (
-        <TouchableOpacity key={i} style={{backgroundColor: color, width: 30, height: 30, margin: 10}} onPress={() => this.itemPressed(color)}></TouchableOpacity>
-      )
+      return <TouchableOpacity key={i} style={[styles.button, {backgroundColor: color, height: this.state.buttonHeight}]} onPress={() => this.itemPressed(color)} />
     });
     return render;
   }
@@ -115,9 +114,9 @@ export default class Grid extends Component {
 
 const styles = StyleSheet.create({
   button: {
-    width: 40,
-    height: 10,
-    margin: 20,
+    flex: 1,
+    alignSelf: 'stretch',
+    margin: 5,
   },
   row: {
     flexDirection: 'row',

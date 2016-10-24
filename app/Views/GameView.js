@@ -15,7 +15,7 @@ export default class GameView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Grid x={16} y={16}/>
+        <Grid x={14} y={14}/>
       </View>
     );
   }
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#fff',
   },
 });
 

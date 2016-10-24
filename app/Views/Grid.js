@@ -8,7 +8,10 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
+
+import hasWon from '../Utils/hasWon';
 
 const COLORS = [
   '#1abc9c',
@@ -39,6 +42,7 @@ export default class Grid extends Component {
   }
   resetGame() {
     this.generateGrid(this.state.gridX, this.state.gridY);
+    hasWon(this.state.grid, COLORS);
   }
   generateGrid(x, y) {
     var gridObj = [];
@@ -82,6 +86,11 @@ export default class Grid extends Component {
       clicks: this.state.clicks + 1
     });
     this.checkColor(this.state.grid[0][0], color, 0, 0);
+
+    if (hasWon(this.state.grid, color)) {
+      Alert.alert(`Gewonnen! Du hast ${this.state.clicks} züge gebraucht.`);
+      return this.resetGame();
+    }
   }
   renderGrid() {
     const render = this.state.grid.map((item, x) => {
@@ -104,15 +113,31 @@ export default class Grid extends Component {
   render() {
     return (
       <View style={styles.container}>
+      <Text>Spielzug: {this.state.clicks}</Text>
         {this.renderGrid()}
-        <TouchableOpacity onPress={this.resetGame}><Text>Reset ({this.state.clicks})</Text></TouchableOpacity>
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>{this.renderButtons()}</View>
+        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 6,}}>{this.renderButtons()}</View>
+        <TouchableOpacity onPress={this.resetGame} style={styles.resetButton}><Text style={styles.resetButtonText}>Reset</Text></TouchableOpacity>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  resetButtonText: {
+    color: '#585858',
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  resetButton: {
+    marginHorizontal: 5,
+    marginVertical: 12,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: '#44bcff',
+    backgroundColor: 'white',
+    paddingVertical: 5,
+  },
   button: {
     flex: 1,
     alignSelf: 'stretch',

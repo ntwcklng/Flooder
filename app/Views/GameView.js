@@ -6,11 +6,13 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Modal
 } from 'react-native';
 
-import Grid from './Grid';
+import Grid from '../Components/Grid';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Settings from '../Components/Settings';
 
 export default class GameView extends Component {
   constructor(props) {
@@ -23,7 +25,7 @@ export default class GameView extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.settingsIcon} onPress={() => {this.setState({x: 10, y: 10})}}><Icon name='cog' size={30} color='#34495e' /></TouchableOpacity>
+      <Settings x={this.state.x} onChange={(val) => this.setState({x: val, y: val})}/>
         <Grid x={this.state.x} y={this.state.y}/>
       </View>
     );

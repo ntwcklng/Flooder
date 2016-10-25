@@ -141,7 +141,8 @@ const styles = StyleSheet.create({
   zuegeText:{
     fontSize: 20,
     fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: 3,
   },
   resetButtonText: {
     color: 'white',
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0,0,0,0)',
     backgroundColor: '#1abc9c',
-    paddingVertical: 5,
+    paddingVertical: 10,
   },
   button: {
     borderRadius: 1,

@@ -5,9 +5,10 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
-  View,
+  ScrollView,
   TouchableOpacity,
-  Modal
+  Modal,
+  View,
 } from 'react-native';
 
 import Grid from '../Components/Grid';
@@ -24,10 +25,12 @@ export default class GameView extends Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-      <Settings x={this.state.x} onChange={(val) => this.setState({x: val, y: val})}/>
-        <Grid x={this.state.x} y={this.state.y}/>
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+        <Settings x={this.state.x} onChange={(val) => this.setState({x: val, y: val})}/>
+          <Grid x={this.state.x} y={this.state.y}/>
+        </View>
+      </ScrollView>
     );
   }
 }

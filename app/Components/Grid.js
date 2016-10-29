@@ -39,6 +39,11 @@ export default class Grid extends Component {
     this.checkColor = this.checkColor.bind(this);
     this.resetGame = this.resetGame.bind(this);
   }
+  componentWillReceiveProps(next) {
+    if (next.refreshGame) {
+      this.resetGame();
+    }
+  }
   updateSizes(x, y) {
     const {height, width} = Dimensions.get('window');
     this.setState({
@@ -48,10 +53,8 @@ export default class Grid extends Component {
   }
   resetGame() {
     this.generateGrid(this.state.gridX, this.state.gridY);
-    hasWon(this.state.grid, COLORS);
   }
   generateGrid(x, y) {
-
     var gridObj = [];
     for (let i = 0; i < x; i++) {
       gridObj[i] = [];
@@ -131,7 +134,6 @@ export default class Grid extends Component {
       <Text style={styles.zuegeText}><Text style={{color: this.state.grid[0][0]}}>{this.state.clicks}</Text></Text>
         {this.renderGrid()}
         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 6,}}>{this.renderButtons()}</View>
-        <TouchableOpacity onPress={this.resetGame} style={styles.resetButton}><Text style={styles.resetButtonText}>Neues Spiel</Text></TouchableOpacity>
       </View>
     );
   }
@@ -170,7 +172,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginTop: 10,
+    marginTop: 0,
   },
 });
 

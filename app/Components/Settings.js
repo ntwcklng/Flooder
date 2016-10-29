@@ -36,7 +36,9 @@ export default class Settings extends Component {
   render() {
     const sliderWidth = Dimensions.get('window').width - 40;
     return (
-      <View style={{alignSelf: 'flex-end'}}><TouchableOpacity style={styles.settingsIcon} onPress={() => {this.settingsVisible(true)}}><Icon name='cog' size={30} color='#34495e' /></TouchableOpacity>
+      <View style={{flexDirection: 'row',  justifyContent: 'space-between'}}>
+        <View style={{flex: .5}}><TouchableOpacity style={styles.settingsIcon} onPress={() => {this.props.refreshGame()}}><Icon name='refresh' size={30} color='#1abc9c' /></TouchableOpacity></View>
+        <View><TouchableOpacity style={styles.settingsIcon} onPress={() => {this.settingsVisible(true)}}><Icon name='cog' size={30} color='#34495e' /></TouchableOpacity>
       <Modal
         visible={this.state.modalVisible}
         animationType='slide'
@@ -58,13 +60,13 @@ export default class Settings extends Component {
         </View>
       </Modal>
       </View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
   settingsIcon: {
-    alignSelf: 'flex-end',
     marginHorizontal: 15,
     marginTop: 30,
   },

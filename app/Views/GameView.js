@@ -21,14 +21,20 @@ export default class GameView extends Component {
     this.state = {
       x: 14,
       y: 14,
+      refresh: false,
     };
   }
   render() {
     return (
       <ScrollView>
         <View style={styles.container}>
-        <Settings x={this.state.x} onChange={(val) => this.setState({x: val, y: val})}/>
-          <Grid x={this.state.x} y={this.state.y}/>
+          <Settings
+            x={this.state.x}
+            onChange={(val) => this.setState({x: val, y: val})}
+
+            refreshGame={() => this.setState({ refresh: !this.state.refresh }) }
+            />
+          <Grid x={this.state.x} y={this.state.y} refreshGame={this.state.refresh} />
         </View>
       </ScrollView>
     );

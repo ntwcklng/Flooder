@@ -19,7 +19,7 @@ export default class Settings extends Component {
     super(props);
     this.state = {
       modalVisible: false,
-      value: this.props.x,
+      value: this.props.gridSize,
     };
   }
   settingsVisible(visible) {

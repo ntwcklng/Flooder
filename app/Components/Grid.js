@@ -26,8 +26,7 @@ export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gridX: this.props.x,
-      gridY: this.props.y,
+      gridSize: this.props.gridSize,
       grid: [],
       clicks: 0,
       boxWidthAndHeight: 0,
@@ -39,26 +38,32 @@ export default class Grid extends Component {
     this.checkColor = this.checkColor.bind(this);
     this.resetGame = this.resetGame.bind(this);
   }
-  componentWillReceiveProps(next) {
-    if (next.refreshGame) {
-      this.resetGame();
-    }
+  componentWillMount() {
+    this.resetGame();
   }
-  updateSizes(x, y) {
+  componentWillReceiveProps(next) {
+    const nextGridSize = next.gridSize || this.state.gridSize;
+    this.setState({
+      gridSize: nextGridSize,
+    }, () => {
+      this.resetGame()
+    });
+  }
+  updateSizes(gridSize) {
     const {height, width} = Dimensions.get('window');
     this.setState({
-      boxWidthAndHeight: width / x,
+      boxWidthAndHeight: width / gridSize,
       buttonHeight: (width / COLORS.length) - 10,
     });
   }
   resetGame() {
-    this.generateGrid(this.state.gridX, this.state.gridY);
+    this.generateGrid(this.state.gridSize);
   }
-  generateGrid(x, y) {
+  generateGrid(gridSize) {
     var gridObj = [];
-    for (let i = 0; i < x; i++) {
+    for (let i = 0; i < gridSize; i++) {
       gridObj[i] = [];
-      for (let o = 0; o < y; o++) {
+      for (let o = 0; o < gridSize; o++) {
         const randomColor = Math.floor(Math.random() * (COLORS.length - 1)) + 1;
         gridObj[i][o] = COLORS[randomColor];
       }
@@ -66,18 +71,7 @@ export default class Grid extends Component {
     this.setState({
       grid: gridObj,
       clicks: 0
-    }, this.updateSizes(x, y));
-  }
-  componentWillMount() {
-    this.generateGrid(this.state.gridX, this.state.gridY);
-  }
-  componentWillReceiveProps(next) {
-    this.setState({
-      gridX: next.x,
-      gridY: next.y,
-    }, () => {
-      this.generateGrid(this.state.gridX, this.state.gridY);
-    });
+    }, this.updateSizes(gridSize));
   }
   checkColor(lastColor, newColor, x, y) {
     let newGrid = this.state.grid;

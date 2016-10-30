@@ -19,8 +19,7 @@ export default class GameView extends Component {
   constructor(props) {
     super();
     this.state = {
-      x: 14,
-      y: 14,
+      gridSize: 14,
       refresh: false,
     };
   }
@@ -29,11 +28,11 @@ export default class GameView extends Component {
       <ScrollView>
         <View style={styles.container}>
           <Settings
-            x={this.state.x}
-            onChange={(val) => this.setState({x: val, y: val})}
+            gridSize={this.state.gridSize}
+            onChange={(val) => this.setState({ gridSize })}
             refreshGame={() => this.setState({ refresh: !this.state.refresh }) }
             />
-          <Grid x={this.state.x} y={this.state.y} refreshGame={this.state.refresh} />
+          <Grid gridSize={this.state.gridSize} refreshGame={this.state.refresh} />
         </View>
       </ScrollView>
     );

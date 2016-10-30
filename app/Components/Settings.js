@@ -13,31 +13,34 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
+import GameActions from '../Actions/GameActions';
+import GameStore from '../Store/GameStore';
 
 export default class Settings extends Component {
   constructor(props) {
     super(props);
     this.state = {
       modalVisible: false,
-      value: this.props.gridSize,
+      value: GameStore.getState().grid,
     };
   }
   settingsVisible(visible) {
     this.setState({modalVisible: visible});
   }
   _onValueChange(val) {
+    GameActions.updateGrid(val);
     this.setState({
       value: val
-    }, () => {
-      this.props.onChange(val);
     });
+  }
+  componentDidMount() {
   }
   render() {
     const sliderWidth = Dimensions.get('window').width - 40;
     return (
       <View style={{flexDirection: 'row',  justifyContent: 'space-between'}}>
         <View style={{flex: .5}}>
-          <TouchableOpacity style={styles.settingsIcon} onPress={() => {this.props.refreshGame()}}><Icon name='refresh' size={30} color='#1abc9c' /></TouchableOpacity>
+          <TouchableOpacity style={styles.settingsIcon} onPress={() => {GameActions.updateGamestate(!GameStore.getState().gamestate)}}><Icon name='refresh' size={30} color='#1abc9c' /></TouchableOpacity>
         </View>
         <View>
           <TouchableOpacity style={styles.settingsIcon} onPress={() => {this.settingsVisible(true)}}><Icon name='cog' size={30} color='#34495e' /></TouchableOpacity>

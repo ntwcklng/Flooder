@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import hasWon from '../Utils/hasWon';
+import GameStore from '../Store/GameStore';
 
 const COLORS = [
   '#1abc9c',
@@ -26,7 +27,7 @@ export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gridSize: this.props.gridSize,
+      gridSize: GameStore.getState().grid,
       grid: [],
       clicks: 0,
       boxWidthAndHeight: 0,
@@ -37,17 +38,21 @@ export default class Grid extends Component {
     this.itemPressed = this.itemPressed.bind(this);
     this.checkColor = this.checkColor.bind(this);
     this.resetGame = this.resetGame.bind(this);
+    this.onStoreChange = this.onStoreChange.bind(this);
+  }
+  componentDidMount() {
+    GameStore.listen(this.onStoreChange);
+  }
+  componentWillUnMount() {
+    GameStore.unlisten(this.onStoreChange);
   }
   componentWillMount() {
     this.resetGame();
   }
-  componentWillReceiveProps(next) {
-    const nextGridSize = next.gridSize || this.state.gridSize;
+  onStoreChange(store) {
     this.setState({
-      gridSize: nextGridSize,
-    }, () => {
-      this.resetGame()
-    });
+      gridSize: store.grid
+    }, this.resetGame);
   }
   updateSizes(gridSize) {
     const {height, width} = Dimensions.get('window');

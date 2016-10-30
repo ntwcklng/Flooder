@@ -16,23 +16,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Settings from '../Components/Settings';
 
 export default class GameView extends Component {
-  constructor(props) {
-    super();
-    this.state = {
-      gridSize: 14,
-      refresh: false,
-    };
-  }
   render() {
     return (
       <ScrollView>
         <View style={styles.container}>
-          <Settings
-            gridSize={this.state.gridSize}
-            onChange={(gridSize) => this.setState({ gridSize })}
-            refreshGame={() => this.setState({ refresh: !this.state.refresh }) }
-            />
-          <Grid gridSize={this.state.gridSize} refreshGame={this.state.refresh} />
+          <Settings />
+          <Grid />
         </View>
       </ScrollView>
     );

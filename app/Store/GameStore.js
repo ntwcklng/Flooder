@@ -3,19 +3,19 @@ import GameActions from '../Actions/GameActions';
 
 class GameStore {
   constructor() {
-    this.gamestate = false;
+    this.refreshHelper = false;
     this.grid = 14;
 
     this.bindListeners({
-      handleUpdateGameState: GameActions.UPDATE_GAMESTATE,
+      handleUpdateGameState: GameActions.UPDATE_REFRESH_HELPER,
       handleUpdateGrid: GameActions.UPDATE_GRID
     });
   }
   handleUpdateGrid(gridSize) {
     this.grid = gridSize;
   }
-  handleUpdateGameState(gamestate) {
-    this.gamestate = gamestate;
+  handleUpdateGameState(refreshHelper) {
+    this.refreshHelper = refreshHelper;
   }
 }
 

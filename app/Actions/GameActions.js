@@ -1,8 +1,8 @@
 import alt from '../alt';
 
 class GameActions {
-  updateGamestate(gamestate) {
-    return gamestate;
+  updateRefreshHelper(refreshHelper) {
+    return refreshHelper;
   }
   updateGrid(grid) {
     return grid;

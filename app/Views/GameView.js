@@ -31,7 +31,6 @@ export default class GameView extends Component {
           <Settings
             x={this.state.x}
             onChange={(val) => this.setState({x: val, y: val})}
-
             refreshGame={() => this.setState({ refresh: !this.state.refresh }) }
             />
           <Grid x={this.state.x} y={this.state.y} refreshGame={this.state.refresh} />

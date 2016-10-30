@@ -26,8 +26,7 @@ export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gridX: this.props.x,
-      gridY: this.props.y,
+      gridSize: this.props.gridSize,
       grid: [],
       clicks: 0,
       boxWidthAndHeight: 0,
@@ -39,22 +38,30 @@ export default class Grid extends Component {
     this.checkColor = this.checkColor.bind(this);
     this.resetGame = this.resetGame.bind(this);
   }
-  componentWillReceiveProps(next) {
-    if (next.refreshGame) {
-      this.resetGame();
-    }
+  componentWillMount() {
+    this.resetGame();
   }
-  updateSizes(x, y) {
+  componentWillReceiveProps(next) {
+    const nextGridSize = next.gridSize || this.state.gridSize;
+    this.setState({
+      gridSize: nextGridSize,
+    }, () => {
+      this.resetGame()
+    });
+  }
+  updateSizes(gridSize) {
     const {height, width} = Dimensions.get('window');
     this.setState({
-      boxWidthAndHeight: width / x,
+      boxWidthAndHeight: width / gridSize,
       buttonHeight: (width / COLORS.length) - 10,
     });
   }
   resetGame() {
-    this.generateGrid(this.state.gridX, this.state.gridY);
+    this.generateGrid(this.state.gridSize);
   }
-  generateGrid(x, y) {
+  generateGrid(gridSize) {
+    const x = gridSize;
+    const y = gridSize;
     var gridObj = [];
     for (let i = 0; i < x; i++) {
       gridObj[i] = [];
@@ -66,18 +73,7 @@ export default class Grid extends Component {
     this.setState({
       grid: gridObj,
       clicks: 0
-    }, this.updateSizes(x, y));
-  }
-  componentWillMount() {
-    this.generateGrid(this.state.gridX, this.state.gridY);
-  }
-  componentWillReceiveProps(next) {
-    this.setState({
-      gridX: next.x,
-      gridY: next.y,
-    }, () => {
-      this.generateGrid(this.state.gridX, this.state.gridY);
-    });
+    }, this.updateSizes(gridSize));
   }
   checkColor(lastColor, newColor, x, y) {
     let newGrid = this.state.grid;
@@ -89,13 +85,13 @@ export default class Grid extends Component {
     if (x > 0) {
       this.checkColor(lastColor, newColor, x - 1, y);
     }
-    if (x < this.state.gridX - 1) {
+    if (x < this.state.gridSize - 1) {
       this.checkColor(lastColor, newColor, x + 1, y);
     }
     if (y > 0) {
       this.checkColor(lastColor, newColor, x, y - 1);
     }
-    if (y < this.state.gridY - 1) {
+    if (y < this.state.gridSize - 1) {
       this.checkColor(lastColor, newColor, x, y + 1);
     }
 
@@ -111,7 +107,7 @@ export default class Grid extends Component {
     });
   }
   renderGrid() {
-    const render = this.state.grid.map((item, x) => {
+    return this.state.grid.map((item, x) => {
       return (
         <View key={x} style={styles.row}>
         {this.state.grid[x].map((color, y) => {
@@ -120,13 +116,11 @@ export default class Grid extends Component {
         </View>
       );
     });
-    return render;
   }
   renderButtons() {
-    const render = COLORS.map((color, i) => {
+    return COLORS.map((color, i) => {
       return <TouchableOpacity key={i} style={[styles.button, {backgroundColor: color, height: this.state.buttonHeight}]} onPress={() => this.itemPressed(color)} />
     });
-    return render;
   }
   render() {
     return (

@@ -60,10 +60,12 @@ export default class Grid extends Component {
     this.generateGrid(this.state.gridSize);
   }
   generateGrid(gridSize) {
+    const x = gridSize;
+    const y = gridSize;
     var gridObj = [];
-    for (let i = 0; i < gridSize; i++) {
+    for (let i = 0; i < x; i++) {
       gridObj[i] = [];
-      for (let o = 0; o < gridSize; o++) {
+      for (let o = 0; o < y; o++) {
         const randomColor = Math.floor(Math.random() * (COLORS.length - 1)) + 1;
         gridObj[i][o] = COLORS[randomColor];
       }
@@ -83,13 +85,13 @@ export default class Grid extends Component {
     if (x > 0) {
       this.checkColor(lastColor, newColor, x - 1, y);
     }
-    if (x < this.state.gridX - 1) {
+    if (x < this.state.gridSize - 1) {
       this.checkColor(lastColor, newColor, x + 1, y);
     }
     if (y > 0) {
       this.checkColor(lastColor, newColor, x, y - 1);
     }
-    if (y < this.state.gridY - 1) {
+    if (y < this.state.gridSize - 1) {
       this.checkColor(lastColor, newColor, x, y + 1);
     }
 
@@ -105,7 +107,7 @@ export default class Grid extends Component {
     });
   }
   renderGrid() {
-    const render = this.state.grid.map((item, x) => {
+    return this.state.grid.map((item, x) => {
       return (
         <View key={x} style={styles.row}>
         {this.state.grid[x].map((color, y) => {
@@ -114,13 +116,11 @@ export default class Grid extends Component {
         </View>
       );
     });
-    return render;
   }
   renderButtons() {
-    const render = COLORS.map((color, i) => {
+    return COLORS.map((color, i) => {
       return <TouchableOpacity key={i} style={[styles.button, {backgroundColor: color, height: this.state.buttonHeight}]} onPress={() => this.itemPressed(color)} />
     });
-    return render;
   }
   render() {
     return (

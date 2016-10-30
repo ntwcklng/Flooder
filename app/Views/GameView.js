@@ -29,7 +29,7 @@ export default class GameView extends Component {
         <View style={styles.container}>
           <Settings
             gridSize={this.state.gridSize}
-            onChange={(val) => this.setState({ gridSize })}
+            onChange={(gridSize) => this.setState({ gridSize })}
             refreshGame={() => this.setState({ refresh: !this.state.refresh }) }
             />
           <Grid gridSize={this.state.gridSize} refreshGame={this.state.refresh} />

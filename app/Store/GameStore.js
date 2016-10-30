@@ -1,7 +1,7 @@
 import alt from '../alt';
 import GameActions from '../Actions/GameActions';
 
-class GameStore {
+export class GameStore {
   constructor() {
     this.refreshHelper = false;
     this.grid = 14;
@@ -19,4 +19,4 @@ class GameStore {
   }
 }
 
-module.exports = alt.createStore(GameStore, 'GameStore');
+export default alt.createStore(GameStore, 'GameStore');

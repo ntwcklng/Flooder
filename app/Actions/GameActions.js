@@ -1,6 +1,6 @@
 import alt from '../alt';
 
-class GameActions {
+export class GameActions {
   updateRefreshHelper(refreshHelper) {
     return refreshHelper;
   }
@@ -9,4 +9,4 @@ class GameActions {
   }
 }
 
-module.exports = alt.createActions(GameActions);
+export default alt.createActions(GameActions);

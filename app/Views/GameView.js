@@ -29,11 +29,6 @@ export default class GameView extends Component {
 }
 
 const styles = StyleSheet.create({
-  settingsIcon: {
-    alignSelf: 'flex-end',
-    marginHorizontal: 15,
-    marginTop: 30,
-  },
   container: {
     flex: 1,
     justifyContent: 'center',

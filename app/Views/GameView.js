@@ -16,9 +16,10 @@ export default class GameView extends Component {
   render() {
     return (
       <ScrollView>
-        <View style={styles.container}>
-          <Settings />
-          <Grid />
+      <View style={styles.container}>
+        <View style={{flex: 1, marginTop: 10, marginBottom: 15}} />
+        <Settings />
+        <Grid />
         </View>
       </ScrollView>
     );

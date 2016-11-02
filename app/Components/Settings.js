@@ -35,7 +35,7 @@ export default class Settings extends Component {
   render() {
     const sliderWidth = Dimensions.get('window').width - 40;
     return (
-      <View style={{flexDirection: 'row',  justifyContent: 'space-between'}}>
+      <View style={{flexDirection: 'row',  justifyContent: 'space-between', flex: 1}}>
         <View style={{flex: .5}}>
           <TouchableOpacity style={styles.settingsIcon} onPress={() => {GameActions.updateRefreshHelper(!GameStore.getState().refreshHelper)}}><Icon name='refresh' size={30} color='#1abc9c' /></TouchableOpacity>
         </View>
@@ -70,7 +70,7 @@ export default class Settings extends Component {
 const styles = StyleSheet.create({
   settingsIcon: {
     marginHorizontal: 15,
-    marginTop: 30,
+    marginVertical: 20,
   },
   modalContainer: {
     flex: 1,

@@ -6,7 +6,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "build:android": "cd android && ./gradlew assembleRelease",
     "run:ios": "react-native run-ios --simulator 'iPhone 7'",
-    "version": "./scripts/version-ios.sh",
+    "version": "./scripts/version-ios.sh Flooder",
     "test": "jest"
   },
   "dependencies": {

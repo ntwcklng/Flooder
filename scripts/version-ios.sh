@@ -1,6 +1,8 @@
 #!/usr/bin/env bash -e
 
-PROJECT_DIR="ios/Flooder"
+BLUE="$(tput setaf 4)"
+NOCOLOR="$(tput sgr0)"
+PROJECT_DIR="ios/$1"
 INFOPLIST_FILE="Info.plist"
 INFOPLIST_DIR="${PROJECT_DIR}/${INFOPLIST_FILE}"
 
@@ -8,6 +10,9 @@ PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $
 
 BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "${INFOPLIST_DIR}")
 BUILD_NUMBER=$(($BUILD_NUMBER + 1))
+
+echo Updated Version to: $BLUE$PACKAGE_VERSION$NOCOLOR
+echo Updated Build Number to: $BLUE$BUILD_NUMBER$NOCOLOR
 
 
 # Update plist with new values

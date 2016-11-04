@@ -4,6 +4,7 @@ export default colorPalette = [
     '#F9FF34',
     '#FFD634',
     '#7CDDFF',
+    '#ED303C',
   ],
   [
     '#69D2E7',
@@ -15,7 +16,6 @@ export default colorPalette = [
   [
     '#1abc9c',
     '#3498db',
-    '#9b59b6',
     '#34495e',
     '#f1c40f',
     '#e74c3c',
@@ -33,5 +33,26 @@ export default colorPalette = [
     '#F5634A',
     '#ED303C',
     '#3B8183',
+  ],
+  [
+    '#E8E8E8',
+    '#DDEE6E',
+    '#A1C251',
+    '#F02040',
+    '#003621',
+  ],
+  [
+    '#AB4BB7',
+    '#FF78A1',
+    '#47DFE4',
+    '#0D7DBD',
+    '#191C51',
+  ],
+  [
+    '#8D7966',
+    '#A8A39D',
+    '#D8C8B8',
+    '#E2DDD9',
+    '#F8F1E9',
   ]
 ];

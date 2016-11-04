@@ -12,7 +12,6 @@ import hasWon from '../Utils/hasWon';
 import GameStore from '../Store/GameStore';
 import colorPalette from '../Utils/colors';
 
-
 export default class Grid extends Component {
   constructor(props) {
     super(props);
@@ -24,39 +23,39 @@ export default class Grid extends Component {
       boxWidthAndHeight: 0,
       buttonHeight: 0,
     };
-    this.generateGrid = this.generateGrid.bind(this);
-    this.renderButtons = this.renderButtons.bind(this);
-    this.itemPressed = this.itemPressed.bind(this);
-    this.checkColor = this.checkColor.bind(this);
-    this.resetGame = this.resetGame.bind(this);
-    this.onStoreChange = this.onStoreChange.bind(this);
+    this._generateGrid = this._generateGrid.bind(this);
+    this._renderButtons = this._renderButtons.bind(this);
+    this._itemPressed = this._itemPressed.bind(this);
+    this._checkColor = this._checkColor.bind(this);
+    this._resetGame = this._resetGame.bind(this);
+    this._onStoreChange = this._onStoreChange.bind(this);
   }
   componentDidMount() {
-    GameStore.listen(this.onStoreChange);
+    GameStore.listen(this._onStoreChange);
   }
   componentWillUnMount() {
-    GameStore.unlisten(this.onStoreChange);
+    GameStore.unlisten(this._onStoreChange);
   }
   componentWillMount() {
-    this.resetGame();
+    this._resetGame();
   }
-  onStoreChange(store) {
+  _onStoreChange(store) {
     this.setState({
       gridSize: store.SETTINGS.grid,
       selectedPalette: store.SETTINGS.selectedPalette
-    }, this.resetGame);
+    }, this._resetGame);
   }
-  updateSizes(gridSize) {
+  _updateSize(gridSize) {
     const {height, width} = Dimensions.get('window');
     this.setState({
       boxWidthAndHeight: width / gridSize,
       buttonHeight: (width / colorPalette[this.state.selectedPalette].length) - 10,
     });
   }
-  resetGame() {
-    this.generateGrid(this.state.gridSize);
+  _resetGame() {
+    this._generateGrid(this.state.gridSize);
   }
-  generateGrid(gridSize) {
+  _generateGrid(gridSize) {
     const x = gridSize;
     const y = gridSize;
     var gridObj = [];
@@ -70,9 +69,9 @@ export default class Grid extends Component {
     this.setState({
       grid: gridObj,
       clicks: 0
-    }, this.updateSizes(gridSize));
+    }, this._updateSize(gridSize));
   }
-  checkColor(lastColor, newColor, x, y) {
+  _checkColor(lastColor, newColor, x, y) {
     let newGrid = this.state.grid;
     if (lastColor === newColor || newGrid[x][y] !== lastColor) return;
     newGrid[x][y] = newColor;
@@ -80,30 +79,30 @@ export default class Grid extends Component {
       grid: newGrid
     });
     if (x > 0) {
-      this.checkColor(lastColor, newColor, x - 1, y);
+      this._checkColor(lastColor, newColor, x - 1, y);
     }
     if (x < this.state.gridSize - 1) {
-      this.checkColor(lastColor, newColor, x + 1, y);
+      this._checkColor(lastColor, newColor, x + 1, y);
     }
     if (y > 0) {
-      this.checkColor(lastColor, newColor, x, y - 1);
+      this._checkColor(lastColor, newColor, x, y - 1);
     }
     if (y < this.state.gridSize - 1) {
-      this.checkColor(lastColor, newColor, x, y + 1);
+      this._checkColor(lastColor, newColor, x, y + 1);
     }
 
   }
-  itemPressed(color) {
+  _itemPressed(color) {
     this.setState({
       clicks: this.state.clicks + 1
     }, () => {
-      this.checkColor(this.state.grid[0][0], color, 0, 0);
+      this._checkColor(this.state.grid[0][0], color, 0, 0);
       if (hasWon(this.state.grid, color)) {
-        Alert.alert(`Gewonnen!`, `Du hast ${this.state.clicks} züge gebraucht.`, [{text: 'OK', onPress: () => this.resetGame()}]);
+        Alert.alert(`Gewonnen!`, `Du hast ${this.state.clicks} züge gebraucht.`, [{text: 'OK', onPress: () => this._resetGame()}]);
       }
     });
   }
-  renderGrid() {
+  _renderGrid() {
     return this.state.grid.map((item, x) => {
       return (
         <View key={x} style={styles.row}>
@@ -114,25 +113,37 @@ export default class Grid extends Component {
       );
     });
   }
-  renderButtons() {
-    return colorPalette[this.state.selectedPalette].map((color, i) => {
-      return <TouchableOpacity key={i} style={[styles.button, {backgroundColor: color, height: this.state.buttonHeight}]} onPress={() => this.itemPressed(color)} />
-    });
+  _renderButtons() {
+    return (
+      <View style={styles.colorPickerContainer}>
+        {colorPalette[this.state.selectedPalette].map((color, i) => {
+          return <TouchableOpacity key={i} style={[styles.button, {backgroundColor: color, height: this.state.buttonHeight}]} onPress={() => this._itemPressed(color)} />
+        })}
+      </View>
+    );
   }
   render() {
     return (
       <View style={styles.container}>
-      <Text style={styles.zuegeText}><Text style={{color: this.state.grid[0][0]}}>{this.state.clicks}</Text></Text>
-        {this.renderGrid()}
-        <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginVertical: 6,}}>{this.renderButtons()}</View>
+        <Text style={styles.zuegeText}>
+          <Text style={{color: '#34495e'}}>{this.state.clicks}</Text>
+        </Text>
+        {this._renderGrid()}
+        {this._renderButtons()}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  colorPickerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 6
+  },
   zuegeText:{
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 3,

@@ -15,6 +15,9 @@ import GameActions from '../Actions/GameActions';
 import GameStore from '../Store/GameStore';
 import colorPalette from '../Utils/colors';
 
+const defaultColor = '#34495e';
+const greenColor = '#1abc9c';
+
 export default class Settings extends Component {
   constructor(props) {
     super(props);
@@ -23,10 +26,10 @@ export default class Settings extends Component {
       value: GameStore.getState().SETTINGS.grid,
       selectedPalette: GameStore.getState().SETTINGS.selectedPalette
     };
-    this.refreshGame = this.refreshGame.bind(this);
+    this._refreshGame = this._refreshGame.bind(this);
     this._onColorChange = this._onColorChange.bind(this);
   }
-  settingsVisible(visible) {
+  _settingsVisible(visible) {
     this.setState({modalVisible: visible});
   }
   _onColorChange(selected) {
@@ -41,53 +44,60 @@ export default class Settings extends Component {
       value: val
     });
   }
-  refreshGame() {
+  _refreshGame() {
     GameActions.updateRefreshHelper(!GameStore.getState().refreshHelper);
   }
   renderColors() {
     return colorPalette.map((palette, index) => {
       const { selectedPalette } = this.state;
-      const unselected = (selectedPalette === index) ? 1 : 0.3;
+      const isSelectedPalette = (selectedPalette === index);
+      const unselectedOpacity = (isSelectedPalette) ? 1 : 0.3;
+      const unselectedMargin = (isSelectedPalette) ? 15 : 4;
       return (
-        <TouchableOpacity key={index} style={{flexDirection: 'row', margin: 10,}} onPress={() => {this._onColorChange(index)}}>
-          {selectedPalette === index && <Icon name='chevron-right' size={20} style={{marginRight: 6}} color='limegreen'/>}
+        <TouchableOpacity key={index} style={[styles.colorPickerContainer, {marginVertical: unselectedMargin}]} onPress={() => {this._onColorChange(index)}}>
+          {isSelectedPalette && <Icon name='chevron-right' size={28} style={{marginRight: 6}} color={greenColor} />}
           {palette.map((color) => {
             return (
-              <View style={{backgroundColor: color, height: 20, width: 20, marginHorizontal: 2, opacity: unselected}} key={color+index} />
+              <View style={[styles.colorPickerItem, { opacity: unselectedOpacity, backgroundColor: color }]} key={color+index} />
             )
           })}
-          {selectedPalette === index && <Icon name='chevron-left' size={20} style={{marginLeft: 6}} color='limegreen'/>}
+          {isSelectedPalette && <Icon name='chevron-left' size={28} style={{marginLeft: 6}} color={greenColor} />}
         </TouchableOpacity>);
     });
   }
   render() {
+    const { value, modalVisible } = this.state;
     const sliderWidth = Dimensions.get('window').width - 40;
     return (
-      <View style={{flexDirection: 'row',  justifyContent: 'space-between', flex: 1}}>
+      <View style={styles.settingsContainer}>
         <View style={{flex: .5}}>
-          <TouchableOpacity style={styles.settingsIcon} onPress={this.refreshGame}><Icon name='refresh' size={30} color='#1abc9c' /></TouchableOpacity>
+          <TouchableOpacity style={styles.settingsIcon} onPress={this._refreshGame}>
+            <Icon name='refresh' size={30} color={greenColor} />
+          </TouchableOpacity>
         </View>
         <View>
-          <TouchableOpacity style={styles.settingsIcon} onPress={() => {this.settingsVisible(true)}}><Icon name='cog' size={30} color='#34495e' /></TouchableOpacity>
+          <TouchableOpacity style={styles.settingsIcon} onPress={() => {this._settingsVisible(true)}}>
+            <Icon name='cog' size={30} color={defaultColor} />
+          </TouchableOpacity>
           <Modal
-            visible={this.state.modalVisible}
+            visible={modalVisible}
             animationType='slide'
             onRequestClose={() => {}}
             transparent={false}>
             <View style={styles.modalContainer}>
               <View style={{marginTop: 30,}}>
-                <Text style={styles.settingsDesc}>Spielfeldgröße: {this.state.value}x{this.state.value}</Text>
+                <Text style={styles.settingsDesc}>Spielfeldgröße: {value}x{value}</Text>
                 <Slider
-                  style={{alignSelf: 'center',height: 20, margin: 15, width: sliderWidth}}
+                  style={[styles.slider, { width: sliderWidth }]}
                   onValueChange={(val) => { this._onValueChange(val) }}
                   minimumValue={4}
-                  maximumValue={20}
+                  maximumValue={24}
                   step={4}
-                  value={this.state.value}
+                  value={value}
                 />
               </View>
-              <ScrollView><Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}</ScrollView>
-              <TouchableOpacity style={{marginTop: 50, alignSelf: 'flex-end'}} onPress={() => this.settingsVisible(false)}><Icon name='check' size={48} color='#1abc9c' /></TouchableOpacity>
+              <ScrollView ref='_scrollView'><Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}</ScrollView>
+              <TouchableOpacity style={styles.saveSettingsButton} onPress={() => this._settingsVisible(false)}><Icon name='check' size={48} color={greenColor} /></TouchableOpacity>
             </View>
           </Modal>
         </View>
@@ -97,7 +107,38 @@ export default class Settings extends Component {
 }
 
 const styles = StyleSheet.create({
-  settingsDesc: {fontWeight: 'bold', fontSize: 20, color: '#34495e', margin: 10, textAlign: 'center',},
+  saveSettingsButton: {
+    marginTop: 50,
+    alignSelf: 'flex-end'
+  },
+  settingsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flex: 1
+  },
+  slider: {
+    alignSelf: 'center',
+    height: 20,
+    margin: 15
+  },
+  colorPickerItem: {
+    height: 28,
+    width: 28,
+    marginHorizontal: 2,
+  },
+  colorPickerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // margin: 10,
+  },
+  settingsDesc: {
+    fontWeight: 'bold',
+    fontSize: 22,
+    color: defaultColor,
+    margin: 10,
+    textAlign: 'center',
+  },
   settingsIcon: {
     marginHorizontal: 15,
     marginVertical: 20,

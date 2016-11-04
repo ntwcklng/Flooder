@@ -10,21 +10,15 @@ import {
 
 import hasWon from '../Utils/hasWon';
 import GameStore from '../Store/GameStore';
+import colorPalette from '../Utils/colors';
 
-const COLORS = [
-  '#1abc9c',
-  '#3498db',
-  '#9b59b6',
-  '#34495e',
-  '#f1c40f',
-  '#e74c3c',
-];
 
 export default class Grid extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      gridSize: GameStore.getState().grid,
+      gridSize: GameStore.getState().SETTINGS.grid,
+      selectedPalette: GameStore.getState().SETTINGS.selectedPalette,
       grid: [],
       clicks: 0,
       boxWidthAndHeight: 0,
@@ -48,14 +42,15 @@ export default class Grid extends Component {
   }
   onStoreChange(store) {
     this.setState({
-      gridSize: store.grid
+      gridSize: store.SETTINGS.grid,
+      selectedPalette: store.SETTINGS.selectedPalette
     }, this.resetGame);
   }
   updateSizes(gridSize) {
     const {height, width} = Dimensions.get('window');
     this.setState({
       boxWidthAndHeight: width / gridSize,
-      buttonHeight: (width / COLORS.length) - 10,
+      buttonHeight: (width / colorPalette[this.state.selectedPalette].length) - 10,
     });
   }
   resetGame() {
@@ -68,8 +63,8 @@ export default class Grid extends Component {
     for (let i = 0; i < x; i++) {
       gridObj[i] = [];
       for (let o = 0; o < y; o++) {
-        const randomColor = Math.floor(Math.random() * (COLORS.length - 1)) + 1;
-        gridObj[i][o] = COLORS[randomColor];
+        const randomColor = Math.floor(Math.random() * (colorPalette[this.state.selectedPalette].length));
+        gridObj[i][o] = colorPalette[this.state.selectedPalette][randomColor];
       }
     }
     this.setState({
@@ -120,7 +115,7 @@ export default class Grid extends Component {
     });
   }
   renderButtons() {
-    return COLORS.map((color, i) => {
+    return colorPalette[this.state.selectedPalette].map((color, i) => {
       return <TouchableOpacity key={i} style={[styles.button, {backgroundColor: color, height: this.state.buttonHeight}]} onPress={() => this.itemPressed(color)} />
     });
   }

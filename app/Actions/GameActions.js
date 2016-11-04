@@ -1,4 +1,4 @@
-import alt from '../alt';
+import alt from '../Utils/alt';
 
 export class GameActions {
   updateRefreshHelper(refreshHelper) {
@@ -6,6 +6,9 @@ export class GameActions {
   }
   updateGrid(grid) {
     return grid;
+  }
+  updateColors(selected) {
+    return selected;
   }
 }
 

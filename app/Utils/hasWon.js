@@ -1,4 +1,4 @@
-const hasWon = (grid, color) => {
+export default function hasWon(grid, color) {
     function flatten(arr) {
         return [].concat(...arr)
     }
@@ -8,7 +8,5 @@ const hasWon = (grid, color) => {
         return elem === color;
     }
     const newGrid = deepFlatten(grid);
-    if(newGrid.every(checkColor)) return true;
-};
-
-module.exports = hasWon;
+    if (newGrid.every(checkColor)) return true;
+}

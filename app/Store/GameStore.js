@@ -1,18 +1,28 @@
-import alt from '../alt';
+import alt from '../Utils/alt';
 import GameActions from '../Actions/GameActions';
+import colorPalette from '../Utils/colors';
 
 export class GameStore {
   constructor() {
     this.refreshHelper = false;
-    this.grid = 14;
+    this.SETTINGS = {
+      grid: 14,
+      selectedPalette: 0
+    }
 
     this.bindListeners({
       handleUpdateGameState: GameActions.UPDATE_REFRESH_HELPER,
-      handleUpdateGrid: GameActions.UPDATE_GRID
+      handleUpdateGrid: GameActions.UPDATE_GRID,
+      handleUpdateColors: GameActions.UPDATE_COLORS
     });
   }
+
   handleUpdateGrid(gridSize) {
-    this.grid = gridSize;
+    this.SETTINGS.grid = gridSize;
+  }
+  handleUpdateColors(selected) {
+    this.SETTINGS.selectedPalette = selected;
+    console.log(selected);
   }
   handleUpdateGameState(refreshHelper) {
     this.refreshHelper = refreshHelper;

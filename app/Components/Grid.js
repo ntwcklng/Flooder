@@ -10,7 +10,36 @@ import {
 
 import hasWon from '../Utils/hasWon';
 import GameStore from '../Store/GameStore';
-import colorPalette from '../Utils/colors';
+import colorPalette from '../Utils/colorPalette';
+import COLORS from '../Utils/colors';
+
+const styles = StyleSheet.create({
+  colorPickerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 6
+  },
+  zuegeText:{
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 3,
+    color: COLORS.defaultText,
+  },
+  button: {
+    borderRadius: 1,
+    flex: 1,
+    alignSelf: 'stretch',
+    margin: 5,
+  },
+  row: {
+    flexDirection: 'row',
+  },
+  container: {
+    flex: 1,
+  },
+});
 
 export default class Grid extends Component {
   constructor(props) {
@@ -22,6 +51,7 @@ export default class Grid extends Component {
       clicks: 0,
       boxWidthAndHeight: 0,
       buttonHeight: 0,
+      colorPressed: '',
     };
     this._generateGrid = this._generateGrid.bind(this);
     this._renderButtons = this._renderButtons.bind(this);
@@ -45,8 +75,8 @@ export default class Grid extends Component {
       selectedPalette: store.SETTINGS.selectedPalette
     }, this._resetGame);
   }
-  _updateSize(gridSize) {
-    const {height, width} = Dimensions.get('window');
+  _updateSize(gridSize: number) {
+    const {width} = Dimensions.get('window');
     this.setState({
       boxWidthAndHeight: width / gridSize,
       buttonHeight: (width / colorPalette[this.state.selectedPalette].length) - 10,
@@ -58,7 +88,7 @@ export default class Grid extends Component {
   _generateGrid(gridSize) {
     const x = gridSize;
     const y = gridSize;
-    var gridObj = [];
+    const gridObj = [];
     for (let i = 0; i < x; i++) {
       gridObj[i] = [];
       for (let o = 0; o < y; o++) {
@@ -72,7 +102,7 @@ export default class Grid extends Component {
     }, this._updateSize(gridSize));
   }
   _checkColor(lastColor, newColor, x, y) {
-    let newGrid = this.state.grid;
+    const newGrid = this.state.grid;
     if (lastColor === newColor || newGrid[x][y] !== lastColor) return;
     newGrid[x][y] = newColor;
     this.setState({
@@ -103,22 +133,20 @@ export default class Grid extends Component {
     });
   }
   _renderGrid() {
-    return this.state.grid.map((item, x) => {
-      return (
+    return this.state.grid.map((item, x) =>
         <View key={x} style={styles.row}>
-        {this.state.grid[x].map((color, y) => {
-          return (<View key={y+x} style={{backgroundColor: color, width: this.state.boxWidthAndHeight, height: this.state.boxWidthAndHeight}}></View>)
-        })}
+          {this.state.grid[x].map((color, y) =>
+            <View key={y+x} style={{backgroundColor: color, width: this.state.boxWidthAndHeight, height: this.state.boxWidthAndHeight}} />
+          )}
         </View>
-      );
-    });
+    );
   }
   _renderButtons() {
     return (
       <View style={styles.colorPickerContainer}>
-        {colorPalette[this.state.selectedPalette].map((color, i) => {
-          return <TouchableOpacity key={i} style={[styles.button, {backgroundColor: color, height: this.state.buttonHeight}]} onPress={() => this._itemPressed(color)} />
-        })}
+        {colorPalette[this.state.selectedPalette].map((color, i) =>
+          <TouchableOpacity key={i} style={[styles.button, {backgroundColor: color, height: this.state.buttonHeight}]} onPress={() => this._itemPressed(color)} />
+        )}
       </View>
     );
   }
@@ -126,7 +154,7 @@ export default class Grid extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.zuegeText}>
-          <Text style={{color: '#34495e'}}>{this.state.clicks}</Text>
+          {this.state.clicks}
         </Text>
         {this._renderGrid()}
         {this._renderButtons()}
@@ -134,46 +162,4 @@ export default class Grid extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  colorPickerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginVertical: 6
-  },
-  zuegeText:{
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 3,
-  },
-  resetButtonText: {
-    color: 'white',
-    textAlign: 'center',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  resetButton: {
-    marginHorizontal: 5,
-    marginVertical: 12,
-    borderRadius: 4,
-    borderWidth: 1,
-    borderColor: 'rgba(0,0,0,0)',
-    backgroundColor: '#1abc9c',
-    paddingVertical: 10,
-  },
-  button: {
-    borderRadius: 1,
-    flex: 1,
-    alignSelf: 'stretch',
-    margin: 5,
-  },
-  row: {
-    flexDirection: 'row',
-  },
-  container: {
-    flex: 1,
-  },
-});
 

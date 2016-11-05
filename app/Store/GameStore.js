@@ -1,6 +1,5 @@
 import alt from '../Utils/alt';
 import GameActions from '../Actions/GameActions';
-import colorPalette from '../Utils/colors';
 
 export class GameStore {
   constructor() {
@@ -22,7 +21,6 @@ export class GameStore {
   }
   handleUpdateColors(selected) {
     this.SETTINGS.selectedPalette = selected;
-    console.log(selected);
   }
   handleUpdateGameState(refreshHelper) {
     this.refreshHelper = refreshHelper;

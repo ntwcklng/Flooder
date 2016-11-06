@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     padding: 30,
-    backgroundColor: 'rgba(255,255,255,.7)',
   },
 });
 

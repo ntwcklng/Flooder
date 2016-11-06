@@ -62,7 +62,6 @@ export default class Grid extends Component {
   }
   componentDidMount() {
     GameStore.listen(this._onStoreChange);
-    setInterval(() => this._resetGame, 200);
   }
   componentWillUnMount() {
     GameStore.unlisten(this._onStoreChange);

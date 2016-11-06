@@ -1,5 +1,5 @@
 const COLORS = {
-  defaultText: '#34495e',
-  successText: '#1abc9c',
+  defaultText: 'rgba(0,0,0,.8)',
+  successText: '#02b875',
 };
 export default COLORS;

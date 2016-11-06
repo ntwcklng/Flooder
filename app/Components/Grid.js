@@ -75,11 +75,14 @@ export default class Grid extends Component {
       selectedPalette: store.SETTINGS.selectedPalette
     }, this._resetGame);
   }
-  _updateSize(gridSize: number) {
-    const {width} = Dimensions.get('window');
+  _updateSize(gridSize) {
+    const { width } = Dimensions.get('window');
+    const buttonHeight = (width / colorPalette[this.state.selectedPalette].length) - 10;
+    const boxWidthAndHeight = Math.floor(width / gridSize);
+
     this.setState({
-      boxWidthAndHeight: width / gridSize,
-      buttonHeight: (width / colorPalette[this.state.selectedPalette].length) - 10,
+      boxWidthAndHeight,
+      buttonHeight,
     });
   }
   _resetGame() {

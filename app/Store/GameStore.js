@@ -1,12 +1,17 @@
 import alt from '../Utils/alt';
 import GameActions from '../Actions/GameActions';
+import colorPalette from '../Utils/colorPalette';
+
+const randomPalette = Math.floor(Math.random() * colorPalette.length - 1) + 1;
+const validColorPalette = (colorPalette[randomPalette]) ? randomPalette : 0;
+
 
 export class GameStore {
   constructor() {
     this.refreshHelper = false;
     this.SETTINGS = {
       grid: 14,
-      selectedPalette: 0
+      selectedPalette: validColorPalette
     }
 
     this.bindListeners({

@@ -11,6 +11,7 @@ PACKAGE_VERSION=$(cat package.json | grep version | head -1 | awk -F: '{ print $
 BUILD_NUMBER=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" "${INFOPLIST_DIR}")
 BUILD_NUMBER=$(($BUILD_NUMBER + 1))
 
+echo Updating $BLUE$1$NOCOLOR
 echo Updated Version to: $BLUE$PACKAGE_VERSION$NOCOLOR
 echo Updated Build Number to: $BLUE$BUILD_NUMBER$NOCOLOR
 

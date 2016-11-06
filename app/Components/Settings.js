@@ -56,6 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     padding: 30,
+    backgroundColor: 'rgba(255,255,255,.7)',
   },
 });
 
@@ -64,25 +65,28 @@ export default class Settings extends Component {
     super(props);
     this.state = {
       modalVisible: false,
-      value: GameStore.getState().SETTINGS.grid,
+      grid: GameStore.getState().SETTINGS.grid,
       selectedPalette: GameStore.getState().SETTINGS.selectedPalette
     };
     this._refreshGame = this._refreshGame.bind(this);
     this._onColorChange = this._onColorChange.bind(this);
   }
   _settingsVisible(visible) {
+    if (this.state.modalVisible) {
+      // only update when the modal gets closed
+      GameActions.updateGrid(this.state.grid);
+      GameActions.updateColors(this.state.selectedPalette);
+    }
     this.setState({modalVisible: visible});
   }
-  _onColorChange(selected) {
-    GameActions.updateColors(selected);
+  _onColorChange(selectedPalette) {
     this.setState({
-      selectedPalette: selected
+      selectedPalette
     });
   }
-  _onValueChange(val) {
-    GameActions.updateGrid(val);
+  _onValueChange(grid) {
     this.setState({
-      value: val
+      grid
     });
   }
   _refreshGame() {
@@ -105,7 +109,7 @@ export default class Settings extends Component {
     });
   }
   render() {
-    const { value, modalVisible } = this.state;
+    const { grid, modalVisible } = this.state;
     const sliderWidth = Dimensions.get('window').width - 40;
     return (
       <View style={styles.settingsContainer}>
@@ -125,14 +129,14 @@ export default class Settings extends Component {
             transparent={false}>
             <View style={styles.modalContainer}>
               <View style={{marginTop: 30,}}>
-                <Text style={styles.settingsDesc}>Spielfeldgröße: {value}x{value}</Text>
+                <Text style={styles.settingsDesc}>Spielfeldgröße: {grid}x{grid}</Text>
                 <Slider
                   style={[styles.slider, { width: sliderWidth }]}
                   onValueChange={(val) => { this._onValueChange(val) }}
                   minimumValue={4}
                   maximumValue={24}
                   step={4}
-                  value={value}
+                  value={grid}
                 />
               </View>
               <ScrollView><Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}</ScrollView>

@@ -62,6 +62,7 @@ export default class Grid extends Component {
   }
   componentDidMount() {
     GameStore.listen(this._onStoreChange);
+    setInterval(() => this._resetGame, 200);
   }
   componentWillUnMount() {
     GameStore.unlisten(this._onStoreChange);
@@ -89,12 +90,10 @@ export default class Grid extends Component {
     this._generateGrid(this.state.gridSize);
   }
   _generateGrid(gridSize) {
-    const x = gridSize;
-    const y = gridSize;
     const gridObj = [];
-    for (let i = 0; i < x; i++) {
+    for (let i = 0; i < gridSize; i++) {
       gridObj[i] = [];
-      for (let o = 0; o < y; o++) {
+      for (let o = 0; o < gridSize; o++) {
         const randomColor = Math.floor(Math.random() * (colorPalette[this.state.selectedPalette].length));
         gridObj[i][o] = colorPalette[this.state.selectedPalette][randomColor];
       }

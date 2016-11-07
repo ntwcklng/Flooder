@@ -19,12 +19,31 @@ import COLORS from '../Utils/colors';
 const styles = StyleSheet.create({
   saveSettingsButton: {
     marginTop: 50,
-    alignSelf: 'flex-end'
+    flex: 1,
+    paddingVertical: 5,
+    borderRadius: 5,
+    backgroundColor: COLORS.green,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  saveSettingsButtonText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: COLORS.white,
+    textAlign: 'center',
+  },
+  saveSettingsButtonIcon: {
+    marginRight: 20,
   },
   settingsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     flex: 1
+  },
+  saveSettingsButtonView: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   slider: {
     alignSelf: 'center',
@@ -99,11 +118,12 @@ export default class Settings extends Component {
       const unselectedMargin = (isSelectedPalette) ? 15 : 4;
       return (
         <TouchableOpacity key={index} style={[styles.colorPickerContainer, {marginVertical: unselectedMargin}]} onPress={() => {this._onColorChange(index)}}>
-          {isSelectedPalette && <Icon name='chevron-right' size={28} style={{marginRight: 6}} color={COLORS.successText} />}
+          {isSelectedPalette && <Icon name='check-square-o' size={28} style={{marginRight: 6}} color={COLORS.defaultText} />}
+          {!isSelectedPalette && <Icon name='square-o' size={28} style={{marginRight: 6}} color={COLORS.defaultTextDisabled} />}
           {palette.map((color) =>
             <View style={[styles.colorPickerItem, { opacity: unselectedOpacity, backgroundColor: color }]} key={color+index} />
           )}
-          {isSelectedPalette && <Icon name='chevron-left' size={28} style={{marginLeft: 6}} color={COLORS.successText} />}
+          {false && <Icon name='chevron-left' size={28} style={{marginLeft: 6}} color={COLORS.green} />}
         </TouchableOpacity>);
     });
   }
@@ -114,12 +134,12 @@ export default class Settings extends Component {
       <View style={styles.settingsContainer}>
         <View style={{flex: .5}}>
           <TouchableOpacity style={styles.settingsIcon} onPress={this._refreshGame}>
-            <Icon name='refresh' size={30} color={COLORS.successText} />
+            <Icon name='refresh' size={30} color={COLORS.green} />
           </TouchableOpacity>
         </View>
         <View>
           <TouchableOpacity style={styles.settingsIcon} onPress={() => {this._settingsVisible(true)}}>
-            <Icon name='cog' size={30} color={COLORS.defaultText} />
+            <Icon name='cogs' size={30} color={COLORS.defaultText} />
           </TouchableOpacity>
           <Modal
             visible={modalVisible}
@@ -140,7 +160,11 @@ export default class Settings extends Component {
               </View>
               <ScrollView><Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}</ScrollView>
               <TouchableOpacity style={styles.saveSettingsButton} onPress={() => this._settingsVisible(false)}>
-                <Icon name='check' size={48} color={COLORS.successText} />
+                {/*<Icon name='check' size={48} color={COLORS.green} />*/}
+                <View style={styles.saveSettingsButtonView}>
+                  <Icon name='save' size={22} color={COLORS.white} style={styles.saveSettingsButtonIcon}/>
+                  <Text style={styles.saveSettingsButtonText}>Speichern</Text>
+                </View>
               </TouchableOpacity>
             </View>
           </Modal>

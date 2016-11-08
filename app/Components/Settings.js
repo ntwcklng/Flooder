@@ -160,7 +160,6 @@ export default class Settings extends Component {
               </View>
               <ScrollView><Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}</ScrollView>
               <TouchableOpacity style={styles.saveSettingsButton} onPress={() => this._settingsVisible(false)}>
-                {/*<Icon name='check' size={48} color={COLORS.green} />*/}
                 <View style={styles.saveSettingsButtonView}>
                   <Icon name='save' size={22} color={COLORS.white} style={styles.saveSettingsButtonIcon}/>
                   <Text style={styles.saveSettingsButtonText}>Speichern</Text>

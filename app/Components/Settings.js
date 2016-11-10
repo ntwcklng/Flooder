@@ -48,7 +48,8 @@ const styles = StyleSheet.create({
   slider: {
     alignSelf: 'center',
     height: 20,
-    margin: 15
+    margin: 15,
+    padding: 20,
   },
   colorPickerItem: {
     height: 28,
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    flex:1,
   },
   settingsDesc: {
     fontWeight: 'bold',
@@ -85,7 +87,7 @@ export default class Settings extends Component {
     this.state = {
       modalVisible: false,
       grid: GameStore.getState().SETTINGS.grid,
-      selectedPalette: GameStore.getState().SETTINGS.selectedPalette
+      selectedPalette: GameStore.getState().SETTINGS.selectedPalette,
     };
     this._refreshGame = this._refreshGame.bind(this);
     this._onColorChange = this._onColorChange.bind(this);
@@ -124,7 +126,6 @@ export default class Settings extends Component {
           {palette.map((color) =>
             <View style={[styles.colorPickerItem, { opacity: unselectedOpacity, backgroundColor: color }]} key={color+index} />
           )}
-          {false && <Icon name='chevron-left' size={28} style={{marginLeft: 6}} color={COLORS.green} />}
         </TouchableOpacity>);
     });
   }
@@ -138,7 +139,7 @@ export default class Settings extends Component {
             <Icon name='refresh' size={30} color={COLORS.green} />
           </TouchableOpacity>
         </View>
-        <View style={{flex:1}}>
+        <View>
           <TouchableOpacity style={styles.settingsIcon} onPress={() => {this._settingsVisible(true)}}>
             <Icon name='cogs' size={30} color={COLORS.defaultText} />
           </TouchableOpacity>
@@ -146,28 +147,32 @@ export default class Settings extends Component {
             visible={modalVisible}
             animationType='slide'
             onRequestClose={() => {/* function req. for android */}}
-            transparent={false}
-            onContentSizeChange={(w,h) => console.log(w,h)}>
+            transparent={false}>
             <View style={[styles.modalContainer, {width: Dimensions.get('window').width}]}>
-              <ScrollView style={{flex:1, height: Dimensions.get('window').height}} contentContainerStyle={{flex:1}}>
-                <Text style={styles.settingsDesc}>Spielfeldgröße: {grid}x{grid}</Text>
-                <Slider
-                  style={[styles.slider, { width: sliderWidth }]}
-                  onValueChange={(val) => { this._onValueChange(val) }}
-                  minimumValue={4}
-                  maximumValue={24}
-                  step={4}
-                  value={grid}
-                />
-              <Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}
-              <TouchableOpacity style={styles.saveSettingsButton} onPress={() => this._settingsVisible(false)}>
-                <View style={styles.saveSettingsButtonView}>
-                  <Icon name='save' size={22} color={COLORS.white} style={styles.saveSettingsButtonIcon}/>
-                  <Text style={styles.saveSettingsButtonText}>Speichern</Text>
+              <View style={{flex:1}}>
+                  <Text style={styles.settingsDesc}>Spielfeldgröße: {grid}x{grid}</Text>
+                  <Slider
+                    style={[styles.slider, { width: sliderWidth }]}
+                    onValueChange={(val) => { this._onValueChange(val) }}
+                    minimumValue={8}
+                    maximumValue={20}
+                    step={2}
+                    value={grid}
+                  />
+                <Text style={styles.settingsDesc}>Farbpalette</Text>
+                <View style={{height: 250}}>
+                  <ScrollView>
+                    {this.renderColors()}
+                  </ScrollView>
                 </View>
-              </TouchableOpacity>
-              </ScrollView>
+                <TouchableOpacity style={styles.saveSettingsButton} onPress={() => this._settingsVisible(false)}>
+                  <View style={styles.saveSettingsButtonView}>
+                    <Icon name='save' size={22} color={COLORS.white} style={styles.saveSettingsButtonIcon}/>
+                    <Text style={styles.saveSettingsButtonText}>Speichern</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
+            </View>
           </Modal>
         </View>
       </View>

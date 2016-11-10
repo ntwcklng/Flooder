@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
 export default function GameView() {
   return (
-    <ScrollView style={{flex: 1}}>
+    <ScrollView>
       <View style={styles.container}>
         <View style={styles.topWrapper} />
         <Settings />

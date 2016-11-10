@@ -19,8 +19,7 @@ import COLORS from '../Utils/colors';
 const styles = StyleSheet.create({
   saveSettingsButton: {
     marginTop: 50,
-    flex: 1,
-    paddingVertical: 5,
+    marginHorizontal: 30,
     borderRadius: 5,
     backgroundColor: COLORS.green,
     alignItems: 'center',
@@ -44,6 +43,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   slider: {
     alignSelf: 'center',
@@ -73,8 +73,9 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'space-between',
-    padding: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
   },
 });
 
@@ -137,7 +138,7 @@ export default class Settings extends Component {
             <Icon name='refresh' size={30} color={COLORS.green} />
           </TouchableOpacity>
         </View>
-        <View>
+        <View style={{flex:1}}>
           <TouchableOpacity style={styles.settingsIcon} onPress={() => {this._settingsVisible(true)}}>
             <Icon name='cogs' size={30} color={COLORS.defaultText} />
           </TouchableOpacity>
@@ -145,9 +146,10 @@ export default class Settings extends Component {
             visible={modalVisible}
             animationType='slide'
             onRequestClose={() => {/* function req. for android */}}
-            transparent={false}>
-            <View style={styles.modalContainer}>
-              <View style={{marginTop: 30,}}>
+            transparent={false}
+            onContentSizeChange={(w,h) => console.log(w,h)}>
+            <View style={[styles.modalContainer, {width: Dimensions.get('window').width}]}>
+              <ScrollView style={{flex:1, height: Dimensions.get('window').height}} contentContainerStyle={{flex:1}}>
                 <Text style={styles.settingsDesc}>Spielfeldgröße: {grid}x{grid}</Text>
                 <Slider
                   style={[styles.slider, { width: sliderWidth }]}
@@ -157,15 +159,15 @@ export default class Settings extends Component {
                   step={4}
                   value={grid}
                 />
-              </View>
-              <ScrollView><Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}</ScrollView>
+              <Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}
               <TouchableOpacity style={styles.saveSettingsButton} onPress={() => this._settingsVisible(false)}>
                 <View style={styles.saveSettingsButtonView}>
                   <Icon name='save' size={22} color={COLORS.white} style={styles.saveSettingsButtonIcon}/>
                   <Text style={styles.saveSettingsButtonText}>Speichern</Text>
                 </View>
               </TouchableOpacity>
-            </View>
+              </ScrollView>
+              </View>
           </Modal>
         </View>
       </View>

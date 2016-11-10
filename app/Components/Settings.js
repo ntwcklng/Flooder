@@ -19,8 +19,7 @@ import COLORS from '../Utils/colors';
 const styles = StyleSheet.create({
   saveSettingsButton: {
     marginTop: 50,
-    flex: 1,
-    paddingVertical: 5,
+    marginHorizontal: 30,
     borderRadius: 5,
     backgroundColor: COLORS.green,
     alignItems: 'center',
@@ -44,11 +43,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
   slider: {
     alignSelf: 'center',
     height: 20,
-    margin: 15
+    margin: 15,
+    padding: 20,
   },
   colorPickerItem: {
     height: 28,
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    flex:1,
   },
   settingsDesc: {
     fontWeight: 'bold',
@@ -73,8 +75,9 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    justifyContent: 'space-between',
-    padding: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 30,
   },
 });
 
@@ -84,7 +87,7 @@ export default class Settings extends Component {
     this.state = {
       modalVisible: false,
       grid: GameStore.getState().SETTINGS.grid,
-      selectedPalette: GameStore.getState().SETTINGS.selectedPalette
+      selectedPalette: GameStore.getState().SETTINGS.selectedPalette,
     };
     this._refreshGame = this._refreshGame.bind(this);
     this._onColorChange = this._onColorChange.bind(this);
@@ -123,7 +126,6 @@ export default class Settings extends Component {
           {palette.map((color) =>
             <View style={[styles.colorPickerItem, { opacity: unselectedOpacity, backgroundColor: color }]} key={color+index} />
           )}
-          {false && <Icon name='chevron-left' size={28} style={{marginLeft: 6}} color={COLORS.green} />}
         </TouchableOpacity>);
     });
   }
@@ -146,26 +148,30 @@ export default class Settings extends Component {
             animationType='slide'
             onRequestClose={() => {/* function req. for android */}}
             transparent={false}>
-            <View style={styles.modalContainer}>
-              <View style={{marginTop: 30,}}>
-                <Text style={styles.settingsDesc}>Spielfeldgröße: {grid}x{grid}</Text>
-                <Slider
-                  style={[styles.slider, { width: sliderWidth }]}
-                  onValueChange={(val) => { this._onValueChange(val) }}
-                  minimumValue={4}
-                  maximumValue={24}
-                  step={4}
-                  value={grid}
-                />
-              </View>
-              <ScrollView><Text style={styles.settingsDesc}>Farbpalette</Text>{this.renderColors()}</ScrollView>
-              <TouchableOpacity style={styles.saveSettingsButton} onPress={() => this._settingsVisible(false)}>
-                {/*<Icon name='check' size={48} color={COLORS.green} />*/}
-                <View style={styles.saveSettingsButtonView}>
-                  <Icon name='save' size={22} color={COLORS.white} style={styles.saveSettingsButtonIcon}/>
-                  <Text style={styles.saveSettingsButtonText}>Speichern</Text>
+            <View style={[styles.modalContainer, {width: Dimensions.get('window').width}]}>
+              <View style={{flex:1}}>
+                  <Text style={styles.settingsDesc}>Spielfeldgröße: {grid}x{grid}</Text>
+                  <Slider
+                    style={[styles.slider, { width: sliderWidth }]}
+                    onValueChange={(val) => { this._onValueChange(val) }}
+                    minimumValue={8}
+                    maximumValue={20}
+                    step={2}
+                    value={grid}
+                  />
+                <Text style={styles.settingsDesc}>Farbpalette</Text>
+                <View style={{height: 250}}>
+                  <ScrollView>
+                    {this.renderColors()}
+                  </ScrollView>
                 </View>
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.saveSettingsButton} onPress={() => this._settingsVisible(false)}>
+                  <View style={styles.saveSettingsButtonView}>
+                    <Icon name='save' size={22} color={COLORS.white} style={styles.saveSettingsButtonIcon}/>
+                    <Text style={styles.saveSettingsButtonText}>Speichern</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </Modal>
         </View>

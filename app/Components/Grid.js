@@ -137,7 +137,7 @@ export default class Grid extends Component {
     return this.state.grid.map((item, x) =>
         <View key={x} style={styles.row}>
           {this.state.grid[x].map((color, y) =>
-            <View key={y+x} style={{backgroundColor: color, width: this.state.boxWidthAndHeight, height: this.state.boxWidthAndHeight}} />
+            <View key={y+x} style={{backgroundColor: color, width: this.state.boxWidthAndHeight, height: this.state.boxWidthAndHeight, margin: -.15}} />
           )}
         </View>
     );
